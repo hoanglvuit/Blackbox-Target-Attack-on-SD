@@ -43,7 +43,7 @@ def select(target_sentence, sentence, pool, generation_scale, score_dict, tokeni
             pool_score.append((temp_score,candidate)) 
             continue
         candidate_prompt = sentence + ' ' + candidate
-        temp_score = cos_embedding_text(target_embedding, candidate_prompt, tokenizer=tokenizer, text_encoder=text_encoder)
+        temp_score = cos_embedding_text(target_embedding, candidate_prompt, tokenizer=tokenizer, text_encoder=text_encoder,mask=mask)
         score_dict[candidate] = temp_score 
         pool_score.append((temp_score,candidate))
     
@@ -62,7 +62,9 @@ def select(target_sentence, sentence, pool, generation_scale, score_dict, tokeni
     return selected_pool, pool_score
     
 
-def evolution_strategy(target_sentence, sentence, char_list, length, generation_num, generation_scale, tokenizer, text_encoder, tour_size, mask = None) : 
+def evolution_strategy(target_sentence, sentence, char_list, length, generation_num, generation_scale, tokenizer, text_encoder, tour_size, mask = None,seed=22520465) : 
+    np.random.seed(seed)
+    random.seed(seed)
     generation_list = init_pool(char_list, length, generation_scale)
     score_dict = {} 
     pool_score_log = []
