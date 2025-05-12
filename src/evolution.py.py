@@ -13,12 +13,10 @@ def generate_offspring(p1: str, p2: str, char_list: list):
     assert len(p1) == len(p2), "Two strings have to be the same length"
     p1_list = list(p1)
     p2_list = list(p2)
-
     # Cross
     cross_loc = random.randint(0, len(p1) - 1)
     p1_list[0:cross_loc] = p2[0:cross_loc]
     p2_list[0:cross_loc] = p1[0:cross_loc]
-
     # Mutation
     vari_loc = random.randint(0, len(p1) - 1)
     vari_char = random.choice(char_list)
@@ -33,7 +31,6 @@ def generate_offspring(p1: str, p2: str, char_list: list):
 
 def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder, tour_size, mask):  
     pool_score = [] 
-
     # Compute fitness for pool
     for candidate in pool: 
         if candidate in score_dict.keys(): 
@@ -44,7 +41,6 @@ def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder
         temp_score = cos_embedding_text(target_embedding, adv_prompt, tokenizer=tokenizer, text_encoder=text_encoder,mask=mask)
         score_dict[candidate] = temp_score 
         pool_score.append((temp_score,candidate))
-    
     # Tournament selection
     selected_pool = []
     random.shuffle(pool_score) 
@@ -72,7 +68,6 @@ def evolution_strategy(target_sentence, sentence, char_list, length, generation_
         tem_pool = generation_list 
         indices = np.arange(len(generation_list)) 
         random.shuffle(indices) 
-
         # Select two random parents for crossover
         for i in range(0, len(generation_list), 2):
             candidate = generation_list[indices[i]] 
