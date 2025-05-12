@@ -1,6 +1,5 @@
 from utils import get_text_embeds_without_uncond, cos_embedding_text
 
-
 def select(pool_score, beam_width): 
     sorted_pool_score = sorted(pool_score, reverse=True) 
     res = [elt[1] for elt in sorted_pool_score[:beam_width]]
@@ -9,12 +8,17 @@ def select(pool_score, beam_width):
 def beam_search(target_sentence, sentence, char_list, length, mask, tokenizer, text_encoder, beam_widths): 
     score_dict = {} 
     target_embedding = get_text_embeds_without_uncond([target_sentence], tokenizer, text_encoder)
-    candidates = char_list
+    candidates = []
     iter = 0 
     pool_score_log = []
 
-    while iter < length : 
+    while iter < length: 
         pool_score = []
+        print(candidates)
+        if not candidates: 
+            candidates = char_list
+        else: 
+            candidates = [x + y for x in candidates for y in char_list]
         for candidate in candidates :  
             if candidate in score_dict.keys(): 
                 temp_score = score_dict[candidate] 
