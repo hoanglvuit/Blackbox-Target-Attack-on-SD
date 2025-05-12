@@ -6,7 +6,6 @@ def select(pool_score, beam_width):
     res = [elt[1] for elt in sorted_pool_score[:beam_width]]
     return res 
     
-
 def beam_search(target_sentence, sentence, char_list, length, mask, tokenizer, text_encoder, beam_widths): 
     score_dict = {} 
     target_embedding = get_text_embeds_without_uncond([target_sentence], tokenizer, text_encoder)
@@ -26,8 +25,6 @@ def beam_search(target_sentence, sentence, char_list, length, mask, tokenizer, t
             pool_score.append((temp_score, candidate)) 
             score_dict[candidate] = temp_score
         pool_score_log.append(pool_score)
-
-
         candidates = select(pool_score, beam_widths[iter])
         iter += 1
     return score_dict, pool_score_log
