@@ -31,19 +31,17 @@ def generate_offspring(p1: str, p2: str, char_list: list):
     return p1_offspring, p2_offspring
 
 
-def select(target_sentence, sentence, pool, generation_scale, score_dict, tokenizer, text_encoder, tour_size, mask):  
+def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder, tour_size, mask):  
     pool_score = [] 
-    target_embedding = get_text_embeds_without_uncond([target_sentence], tokenizer, text_encoder)
 
-    
     # Compute fitness for pool
     for candidate in pool: 
         if candidate in score_dict.keys(): 
             temp_score = score_dict[candidate] 
             pool_score.append((temp_score,candidate)) 
             continue
-        candidate_prompt = sentence + ' ' + candidate
-        temp_score = cos_embedding_text(target_embedding, candidate_prompt, tokenizer=tokenizer, text_encoder=text_encoder,mask=mask)
+        adv_prompt = sentence + ' ' + candidate
+        temp_score = cos_embedding_text(target_embedding, adv_prompt, tokenizer=tokenizer, text_encoder=text_encoder,mask=mask)
         score_dict[candidate] = temp_score 
         pool_score.append((temp_score,candidate))
     
@@ -68,6 +66,7 @@ def evolution_strategy(target_sentence, sentence, char_list, length, generation_
     generation_list = init_pool(char_list, length, generation_scale)
     score_dict = {} 
     pool_score_log = []
+    target_embedding = get_text_embeds_without_uncond([target_sentence], tokenizer, text_encoder)
 
     for _ in range(generation_num): 
         tem_pool = generation_list 
@@ -82,7 +81,7 @@ def evolution_strategy(target_sentence, sentence, char_list, length, generation_
             tem_pool.append(g1)
             tem_pool.append(g2)
         
-        generation_list, pool_score = select(target_sentence = target_sentence, sentence=sentence, pool=tem_pool, generation_scale =generation_scale , score_dict=score_dict, tokenizer=tokenizer, text_encoder=text_encoder, tour_size=tour_size, mask=mask)
+        generation_list, pool_score = select(target_embedding = target_embedding, sentence=sentence, pool=tem_pool, score_dict=score_dict, tokenizer=tokenizer, text_encoder=text_encoder, tour_size=tour_size, mask=mask)
         pool_score_log.append(pool_score)
 
 
