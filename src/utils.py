@@ -19,3 +19,4 @@ def cos_embedding_text(embading, text, mask=None, tokenizer=None, text_encoder=N
         return cos(embading.view(-1), change_embading.view(-1)).item()
     else:
         return cos(embading.view(-1)*mask, change_embading.view(-1)*mask).item()
+    
