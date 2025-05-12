@@ -8,7 +8,6 @@ def init_pool(char_list, length, generation_scale):
         pool.append(''.join(random.sample(char_list, length))) 
     return pool 
 
-
 def generate_offspring(p1: str, p2: str, char_list: list): 
     assert len(p1) == len(p2), "Two strings have to be the same length"
     p1_list = list(p1)
@@ -27,7 +26,6 @@ def generate_offspring(p1: str, p2: str, char_list: list):
     p2_offspring = ''.join(p2_list)
 
     return p1_offspring, p2_offspring
-
 
 def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder, tour_size, mask):  
     pool_score = [] 
@@ -55,7 +53,6 @@ def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder
 
     return selected_pool, pool_score
     
-
 def evolution_strategy(target_sentence, sentence, char_list, length, generation_num, generation_scale, tokenizer, text_encoder, tour_size, mask = None,seed=22520465) : 
     np.random.seed(seed)
     random.seed(seed)
