@@ -1,0 +1,6 @@
+  {
+    "ori_sentence": "a sandwich",
+    "tar_sentence": "a sandwich and an egg",
+    "oo": "sandwich",
+    "to": "egg"
+  }
