@@ -18,3 +18,21 @@ def cos_embedding_text(embading, text, mask=None, tokenizer=None, text_encoder=N
     else:
         return cos(embading.view(-1)*mask, change_embading.view(-1)*mask).item()
     
+def compare_sentences(sentence1,sentence2,mask=None,tokenizer=None,text_encoder=None) : 
+    text_embedding1 = get_text_embeds_without_uncond([sentence1], tokenizer, text_encoder)
+    text_embedding2 = get_text_embeds_without_uncond([sentence2], tokenizer, text_encoder)
+    cos = torch.nn.CosineSimilarity(dim=0, eps=1e-6)
+    if mask != None : 
+        result = cos(text_embedding1.view(-1) *mask, text_embedding2.view(-1)*mask).item()
+    else : 
+        result = cos(text_embedding1.view(-1) , text_embedding2.view(-1)).item()
+    return result
+
+def get_char_table():
+    char_table=['·','~','!','@','#','$','%','^','*','(',')','=','-','*','.','<','>','?',',','\'',';',':','|','\\','/']
+    for i in range(ord('a'),ord('z')+1):
+        char_table.append(chr(i))
+    for i in range(0,10):
+        char_table.append(str(i))
+    return char_table
+    
