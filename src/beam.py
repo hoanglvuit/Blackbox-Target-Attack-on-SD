@@ -14,7 +14,6 @@ def beam_search(target_sentence, sentence, char_list, length, mask, tokenizer, t
 
     while iter < length: 
         pool_score = []
-        print(candidates)
         if not candidates: 
             candidates = char_list
         else: 
