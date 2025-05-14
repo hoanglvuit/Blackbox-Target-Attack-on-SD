@@ -1,4 +1,4 @@
-from utils import compare_sentences
+from .utils import compare_sentences
 
 
 def avoidance_strategy(char_list, tar_object, tokenizer, text_encoder):

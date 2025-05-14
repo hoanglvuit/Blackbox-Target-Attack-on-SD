@@ -1,4 +1,4 @@
-from utils import get_text_embeds_without_uncond, cos_embedding_text
+from .utils import get_text_embeds_without_uncond, cos_embedding_text
 
 def select(pool_score, beam_width): 
     sorted_pool_score = sorted(pool_score, reverse=True) 

@@ -1,6 +1,6 @@
 import random 
 import numpy as np 
-from utils import get_text_embeds_without_uncond, cos_embedding_text
+from .utils import get_text_embeds_without_uncond, cos_embedding_text
 
 def init_pool(char_list, length, generation_scale):
     pool = [] 

@@ -1,6 +1,6 @@
 import numpy as np 
 import torch
-from utils import get_text_embeds_without_uncond
+from .utils import get_text_embeds_without_uncond
 
 def consine_similarity(embed1, embed2, mask=None): 
     cos = torch.nn.CosineSimilarity(dim=0, eps=1e-6) 
