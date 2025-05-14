@@ -29,7 +29,7 @@ def compare_sentences(sentence1,sentence2,mask=None,tokenizer=None,text_encoder=
     return result
 
 def get_char_table():
-    char_table=['·','~','!','@','#','$','%','^','*','(',')','=','-','*','.','<','>','?',',','\'',';',':','|','\\','/']
+    char_table=['·','~','!','@','#','$','%','^','*','(',')','=','-','_','.','<','>','?',',','\'',';',':','|','\\','/']
     for i in range(ord('a'),ord('z')+1):
         char_table.append(chr(i))
     for i in range(0,10):
