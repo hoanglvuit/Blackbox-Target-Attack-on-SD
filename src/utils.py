@@ -1,5 +1,7 @@
 import torch 
 import numpy as np 
+import gc
+from torch import autocast
 
 def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder):
     # Tokenize text and get embeddings
@@ -36,3 +38,12 @@ def get_char_table():
         char_table.append(str(i))
     return char_table
     
+def generate_images(prompts,pipe,generator,num_image = 10) : 
+    torch.cuda.empty_cache()
+    gc.collect()
+    images = [] 
+    for prompt in prompts : 
+        with autocast('cuda') : 
+            image = pipe([prompt],generator = generator,num_inference_steps=50,num_images_per_prompt = num_image).images
+            images.append(image)
+    return images
