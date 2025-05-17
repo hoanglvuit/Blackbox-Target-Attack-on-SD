@@ -25,8 +25,3 @@ for dirpath, dirnames, filenames in os.walk(root_folder):
             success_rate[filename] = response 
         with open(os.path.join(dirpath,"success_rate_oo.json"), "w", encoding='utf-8') as file: 
             json.dump(success_rate, file, ensure_ascii=False, indent=4)
-            
-      
-
-
- 
