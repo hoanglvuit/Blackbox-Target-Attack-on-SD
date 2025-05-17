@@ -29,7 +29,7 @@ def process_scores(root_folder):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate search scores from cosin and score_dict JSON files.")
-    parser.add_argument("--root", type=str, default="top3_log/sentence1", help="Root folder to search in.")
+    parser.add_argument("--root", type=str, default="top3_log", help="Root folder to search in.")
     
     args = parser.parse_args()
     process_scores(args.root)
