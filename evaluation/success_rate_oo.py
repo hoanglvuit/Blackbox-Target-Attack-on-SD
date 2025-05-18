@@ -7,7 +7,6 @@ from gemini import gemini_evaluation
 
 def process_scores(root_folder, gemini_key):
     for dirpath, dirnames, filenames in os.walk(root_folder): 
-        eval_object = None
         
         # Load the evaluation object from the JSON file
         for filename in filenames:
@@ -40,7 +39,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate images using Gemini API and evaluation OO object.")
     parser.add_argument("--root", type=str, default="top3_log", help="Root folder to search in.")
     parser.add_argument("--api", type=str, default=None, help="API for Gemini")
-    
+
     args = parser.parse_args()
     load_dotenv()
     gemini_key = os.getenv("GEMINI_API_KEY")

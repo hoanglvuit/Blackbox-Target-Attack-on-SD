@@ -5,9 +5,8 @@ def gemini_evaluation(image_bytes: bytes, eval_object: str, gemini_key) -> str:
     client = Client(api_key=gemini_key)
 
     prompt = (
-        f"Please look at the image and determine if it contains {eval_object}. Respond with '1' if there is at least one '{eval_object}' visible, or '0' if there are none."
+        f"Please look at the image and determine if it contains {eval_object}. Respond with '1' if there is at least one {eval_object} visible, or '0' if there are none."
     )
-    print(prompt)
 
     response = client.models.generate_content(
         model='gemini-2.0-flash',

@@ -7,7 +7,6 @@ from gemini import gemini_evaluation
 
 def process_scores(root_folder, gemini_key):
     for dirpath, dirnames, filenames in os.walk(root_folder): 
-        eval_object = None
         
         # Load the evaluation object from the JSON file
         for filename in filenames:
