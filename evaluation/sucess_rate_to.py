@@ -5,11 +5,7 @@ import argparse
 from dotenv import load_dotenv
 from gemini import gemini_evaluation
 
-def process_scores(root_folder):
-    # Load API key
-    load_dotenv()
-    gemini_key = os.getenv("GEMINI_API_KEY")
-
+def process_scores(root_folder, gemini_key):
     for dirpath, dirnames, filenames in os.walk(root_folder): 
         eval_object = None
         
@@ -43,6 +39,12 @@ def process_scores(root_folder):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate images using Gemini API and evaluation TO object.")
     parser.add_argument("--root", type=str, default="top3_log", help="Root folder to search in.")
-    
+    parser.add_argument("--api", type=str, default=None, help="API for Gemini")
+
     args = parser.parse_args()
-    process_scores(args.root)
+    load_dotenv()
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if args.api != None: 
+        gemini_key = args.api
+    process_scores(args.root, gemini_key)
+
