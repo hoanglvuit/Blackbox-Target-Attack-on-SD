@@ -3,7 +3,7 @@ import json
 import numpy as np
 from glob import glob
 
-# Đường dẫn tới thư mục chứa sentence1...sentence20
+
 base_path = "output"
 
 # Các loại cần lấy dữ liệu
