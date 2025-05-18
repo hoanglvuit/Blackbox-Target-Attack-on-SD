@@ -17,7 +17,7 @@ def process_scores(root_folder):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate if images contain both original object and target object")
-    parser.add_argument("--root", type=str, default="top3_log")
+    parser.add_argument("--root", type=str, default="output")
 
     args = parser.parse_args()
     process_scores(args.root)
