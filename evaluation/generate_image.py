@@ -102,4 +102,3 @@ if __name__ == "__main__":
     oo, tar_sentence = create_ori_target(root_path) 
     start_sentence = tar_sentence[:tar_sentence.find(oo) + len(oo)].strip() 
     create_image(root_path, start_sentence)
-
