@@ -70,6 +70,12 @@ To evaluate the success rate of both:
 python success_rate_both.py --root 'top3_log'
 ```
 
+Finally, run sumary.py to display performance 
+```bash
+python summary.py
+python summary_search_score.py
+```
+
 
 
 

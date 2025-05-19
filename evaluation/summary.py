@@ -4,7 +4,7 @@ import numpy as np
 from glob import glob
 
 
-base_path = "output"
+base_path = "top3_log"
 
 # Các loại cần lấy dữ liệu
 categories = [

@@ -3,7 +3,7 @@ import json
 import numpy as np
 
 # Đường dẫn tới folder chứa sentence1 -> sentence20
-root_folder = "output"
+root_folder = "top3_log"
 
 # Các loại cần xử lý
 types = [
