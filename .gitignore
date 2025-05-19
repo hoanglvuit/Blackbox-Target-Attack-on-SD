@@ -1,4 +1,4 @@
 log/
 .env
-#evaluation/top3_log/
+evaluation/top3_log/
 evaluation/output/
