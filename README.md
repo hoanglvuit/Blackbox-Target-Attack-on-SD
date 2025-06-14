@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 Try with all sentences in the dataset folder:
 ```bash
-python run_experiement.py --sentence 'sentence1'
+python run_experiement.py --sentence_path 'dataset/sentence1'
 python run_experiement.py --sentence 'sentence2'
 ...
 python run_experiement.py --sentence 'sentence20'
@@ -75,8 +75,3 @@ Finally, run sumary.py to display performance
 python summary.py
 python summary_search_score.py
 ```
-
-
-
-
-
