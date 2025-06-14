@@ -15,7 +15,7 @@ def find_target_embedding_mask(target_embedding, ori_embedding, thres=1):
     mask = diff > thres 
     return mask.float() 
 
-def auto_tune_threshold(target_sentence,sentence,tokenizer,text_encoder,start = 0.5,end = 10, space_limit = 6000, cosine_limit = 0.35)  : 
+def auto_tune_threshold(target_sentence,sentence,tokenizer,text_encoder,start = 0.5,end = 20, space_limit = 6000, cosine_limit = 0.35)  : 
     target_embedding = get_text_embeds_without_uncond(target_sentence, tokenizer=tokenizer, text_encoder=text_encoder)
     ori_embedding = get_text_embeds_without_uncond(sentence, tokenizer=tokenizer, text_encoder=text_encoder)
     thres = np.arange(start,end,0.01) 
@@ -25,4 +25,6 @@ def auto_tune_threshold(target_sentence,sentence,tokenizer,text_encoder,start = 
         te = te.view(-1) 
         cosine = consine_similarity(target_embedding,ori_embedding,te) 
         if np.sum(te_list) < space_limit or cosine < cosine_limit : 
+            print(f"Search space: {np.sum(te_list)}")
+            print(f"Cosine in TE: {cosine}")
             return te, cosine
