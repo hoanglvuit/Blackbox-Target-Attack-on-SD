@@ -7,8 +7,9 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from src import get_char_table, avoidance_strategy, compare_sentences, beam_search, evolution_strategy, auto_tune_threshold
 
 def main(args):
-    sentence_path = args.sentence_path 
-    log_dir = args.log_path
+    sentence_name = args.sentence  
+    sentence_path = f'dataset/{sentence_name}.json'
+    log_dir = f'log/{sentence_name}'
     space_limit = args.space_limit 
     cosine_limit = args.cosine_limit 
 
@@ -18,7 +19,7 @@ def main(args):
     # Step 2: Load and copy input data
     with open(sentence_path, 'r') as file:
         data = json.load(file)
-    with open(f'{log_dir}.json', 'w') as file:
+    with open(f'{log_dir}/{sentence_name}.json', 'w') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
     oo = data['oo']
@@ -108,8 +109,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sentence_path", type=str, required=True, help="Sentence file path, e.g. 'dataset/sentence14'")
-    parser.add_argument("--log_path", type=str, required=True, help="Log path, e.g: 'log/sentence14'" )
+    parser.add_argument("--sentence", type=str, required=True, help="Name of the sentence file, e.g. sentence14")
     parser.add_argument("--space_limit", type=int, default=6000)
     parser.add_argument("--cosine_limit", type=str, default=0.35)
     args = parser.parse_args()
