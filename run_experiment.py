@@ -111,6 +111,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--sentence", type=str, required=True, help="Name of the sentence file, e.g. sentence14")
     parser.add_argument("--space_limit", type=int, default=6000)
-    parser.add_argument("--cosine_limit", type=str, default=0.35)
+    parser.add_argument("--cosine_limit", type=float, default=0.35)
     args = parser.parse_args()
     main(args)
