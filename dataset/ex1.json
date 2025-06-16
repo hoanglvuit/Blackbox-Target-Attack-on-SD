@@ -1,6 +1,6 @@
 {
-  "ori_sentence": "a dog",
-  "tar_sentence": "a car",
-  "oo": "dog",
-  "to": "car"
+  "ori_sentence": "an apple",
+  "tar_sentence": "a lake",
+  "oo": "apple",
+  "to": "lake"
 }
