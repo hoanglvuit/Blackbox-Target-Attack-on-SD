@@ -1,6 +1,6 @@
 {
-  "ori_sentence": "a box",
-  "tar_sentence": "a doll",
-  "oo": "box",
-  "to": "doll"
+  "ori_sentence": "a red apple on a plate",
+  "tar_sentence": "a red apple on a basket",
+  "oo": "plate",
+  "to": "basket"
 }
