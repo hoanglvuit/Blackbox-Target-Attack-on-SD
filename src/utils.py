@@ -13,6 +13,9 @@ def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=2
     all_embeddings = []
     print(f"Getting text embeddings for {len(prompts)} prompts")
     for start_idx in range(0, len(prompts), batch_size):
+        gc.collect()
+        torch.cuda.empty_cache()
+        print(f"Getting text embeddings for {len(prompts[start_idx:start_idx + batch_size])} prompts")
         batch_prompts = prompts[start_idx:start_idx + batch_size]
         text_input = tokenizer(
             batch_prompts,
