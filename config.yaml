@@ -1,0 +1,27 @@
+dataset_path: "dataset"
+output_path: "output"
+log_path: "log"
+space_limit: 6000
+cosine_limit: 0.35
+len_prompt: 5
+start_seed: 22520465
+num_seeds: 10
+
+beam_uni: true
+beam_uni_widths: [60, 140, 140, 140, 3]
+
+beam_in: true
+beam_in_widths: [60, 20, 50, 350, 3]
+
+beam_de: true
+beam_de_widths: [60, 350, 50, 20, 3]
+
+popop: true
+generation_num: 50
+generation_scale: 1280
+tour_size: 4
+
+note_mode: true
+te_mode: true
+
+model: "openai/clip-vit-large-patch14"
