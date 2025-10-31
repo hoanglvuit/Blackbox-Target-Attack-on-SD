@@ -1,6 +1,6 @@
 import random 
 import numpy as np 
-from .utils import get_text_embeds_without_uncond, cos_embedding_text
+from .utils import get_text_embeds_without_uncond, cos_embedding_text_batch
 
 def init_pool(char_list, length, generation_scale):
     pool = [] 
@@ -29,16 +29,16 @@ def generate_offspring(p1: str, p2: str, char_list: list):
 
 def select(target_embedding, sentence, pool, score_dict, tokenizer, text_encoder, tour_size, mask):  
     pool_score = [] 
-    # Compute fitness for pool
-    for candidate in pool: 
-        if candidate in score_dict.keys(): 
-            temp_score = score_dict[candidate] 
-            pool_score.append((temp_score,candidate)) 
-            continue
-        adv_prompt = sentence + ' ' + candidate
-        temp_score = cos_embedding_text(target_embedding, adv_prompt, tokenizer=tokenizer, text_encoder=text_encoder,mask=mask)
-        score_dict[candidate] = temp_score 
-        pool_score.append((temp_score,candidate))
+    # Compute fitness for pool (batched)
+    uncached = [c for c in pool if c not in score_dict]
+    if uncached:
+        adv_prompts = [sentence + ' ' + c for c in uncached]
+        scores = cos_embedding_text_batch(target_embedding, adv_prompts, tokenizer=tokenizer, text_encoder=text_encoder, mask=mask)
+        for c, s in zip(uncached, scores):
+            score_dict[c] = s
+    for candidate in pool:
+        temp_score = score_dict[candidate]
+        pool_score.append((temp_score, candidate))
     # Tournament selection
     selected_pool = []
     random.shuffle(pool_score) 

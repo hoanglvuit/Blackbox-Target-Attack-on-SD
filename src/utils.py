@@ -3,22 +3,44 @@ import numpy as np
 import gc
 from torch import autocast
 
-def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder):
-    # Tokenize text and get embeddings
-    text_input = tokenizer(
-      prompt, padding='max_length', max_length=tokenizer.model_max_length,
-      truncation=True, return_tensors='pt')
-    with torch.no_grad():
-        text_embeddings = text_encoder(text_input.input_ids.cuda())[0]
-    return text_embeddings
+def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=256):
+    # Tokenize text and get embeddings (supports string or list of strings)
+    if isinstance(prompt, str):
+        prompts = [prompt]
+    else:
+        prompts = list(prompt)
+
+    all_embeddings = []
+    for start_idx in range(0, len(prompts), batch_size):
+        batch_prompts = prompts[start_idx:start_idx + batch_size]
+        text_input = tokenizer(
+            batch_prompts,
+            padding='max_length',
+            max_length=tokenizer.model_max_length,
+            truncation=True,
+            return_tensors='pt')
+        with torch.no_grad():
+            batch_embeddings = text_encoder(text_input.input_ids.cuda())[0]
+        all_embeddings.append(batch_embeddings)
+
+    if len(all_embeddings) == 1:
+        return all_embeddings[0]
+    return torch.cat(all_embeddings, dim=0)
+
+def cos_embedding_text_batch(embading, texts, mask=None, tokenizer=None, text_encoder=None, batch_size=256):
+    # Compute cosine similarity between a single target embedding and a batch of texts
+    change_embeddings = get_text_embeds_without_uncond(texts, tokenizer, text_encoder, batch_size=batch_size)
+    target_flat = embading.view(1, -1)
+    batch_flat = change_embeddings.view(change_embeddings.shape[0], -1)
+    if mask is not None:
+        mask = mask.view(1, -1).to(batch_flat.device)
+        target_flat = target_flat * mask
+        batch_flat = batch_flat * mask
+    return torch.nn.functional.cosine_similarity(batch_flat, target_flat.expand_as(batch_flat), dim=1).tolist()
 
 def cos_embedding_text(embading, text, mask=None, tokenizer=None, text_encoder=None):    
-    change_embading = get_text_embeds_without_uncond([text], tokenizer, text_encoder)
-    cos = torch.nn.CosineSimilarity(dim=0, eps=1e-6)
-    if mask==None:
-        return cos(embading.view(-1), change_embading.view(-1)).item()
-    else:
-        return cos(embading.view(-1)*mask, change_embading.view(-1)*mask).item()
+    # Backward-compatible single-text cosine
+    return cos_embedding_text_batch(embading, [text], mask=mask, tokenizer=tokenizer, text_encoder=text_encoder)[0]
     
 def compare_sentences(sentence1,sentence2,mask=None,tokenizer=None,text_encoder=None) : 
     text_embedding1 = get_text_embeds_without_uncond([sentence1], tokenizer, text_encoder)
