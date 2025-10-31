@@ -3,7 +3,7 @@ import numpy as np
 import gc
 from torch import autocast
 
-def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=256):
+def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=1024):
     if isinstance(prompt, str):
         prompts = [prompt]
     else:
