@@ -25,6 +25,9 @@ def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=2
 
     if len(all_embeddings) == 1:
         return all_embeddings[0]
+    
+    gc.collect()
+    torch.cuda.empty_cache()
     return torch.cat(all_embeddings, dim=0)
 
 def cos_embedding_text_batch(embading, texts, mask=None, tokenizer=None, text_encoder=None, batch_size=256):
