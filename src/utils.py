@@ -4,7 +4,6 @@ import gc
 from torch import autocast
 
 def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=256):
-    # Tokenize text and get embeddings (supports string or list of strings)
     if isinstance(prompt, str):
         prompts = [prompt]
     else:
@@ -13,24 +12,30 @@ def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=2
     all_embeddings = []
     print(f"Getting text embeddings for {len(prompts)} prompts")
     for start_idx in range(0, len(prompts), batch_size):
-        gc.collect()
-        torch.cuda.empty_cache()
         batch_prompts = prompts[start_idx:start_idx + batch_size]
         text_input = tokenizer(
             batch_prompts,
             padding='max_length',
             max_length=tokenizer.model_max_length,
             truncation=True,
-            return_tensors='pt')
+            return_tensors='pt'
+        )
         with torch.no_grad():
             batch_embeddings = text_encoder(text_input.input_ids.cuda())[0]
+
+        # Move to CPU and free GPU memory
+        batch_embeddings = batch_embeddings.cpu()
         all_embeddings.append(batch_embeddings)
+
+        del text_input
+        del batch_embeddings
+        torch.cuda.empty_cache()
+        gc.collect()
 
     if len(all_embeddings) == 1:
         return all_embeddings[0]
-    
-    gc.collect()
-    torch.cuda.empty_cache()
+
+    # Concat on CPU
     return torch.cat(all_embeddings, dim=0)
 
 def cos_embedding_text_batch(embading, texts, mask=None, tokenizer=None, text_encoder=None, batch_size=256):
