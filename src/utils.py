@@ -38,7 +38,7 @@ def get_text_embeds_without_uncond(prompt, tokenizer, text_encoder, batch_size=1
     # Concat on CPU
     return torch.cat(all_embeddings, dim=0)
 
-def cos_embedding_text_batch(embading, texts, mask=None, tokenizer=None, text_encoder=None, batch_size=1024):
+def cos_embedding_text_batch(embading, texts, mask=None, tokenizer=None, text_encoder=None, batch_size=2048):
     # Compute cosine similarity between a single target embedding and a batch of texts
     change_embeddings = get_text_embeds_without_uncond(texts, tokenizer, text_encoder, batch_size=batch_size)
     target_flat = embading.view(1, -1)
